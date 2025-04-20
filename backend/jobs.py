@@ -122,6 +122,7 @@ def initialize_scheduler():
 
     # Start the scheduler
     scheduler.start()
+    print('Scheduler started...')
 
     # Keep the main thread alive to keep the scheduler running
     try:
