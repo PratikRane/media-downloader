@@ -41,6 +41,50 @@
     <!-- Output area -->
     <div class="output" id="output"></div>
 
+    <h1>Channel Management</h1>
+
+    <!-- Form to add a new channel -->
+    <h2>Add New Channel</h2>
+    <form id="addChannelForm">
+        <label for="channel_name">Channel Name:</label>
+        <input type="text" id="channel_name" required /><br>
+
+        <label for="channel_url">Channel URL:</label>
+        <input type="text" id="channel_url" required /><br>
+
+        <label for="use_filter">Use Filter:</label>
+        <select id="use_filter">
+            <option value="0">No</option>
+            <option value="1">Yes</option>
+        </select><br>
+
+        <label for="filter_string">Filter String:</label>
+        <input type="text" id="filter_string" /><br>
+
+        <label for="auto_download_videos">Auto Download Videos:</label>
+        <select id="auto_download_videos">
+            <option value="0">No</option>
+            <option value="1">Yes</option>
+        </select><br>
+
+        <label for="auto_download_shorts">Auto Download Shorts:</label>
+        <select id="auto_download_shorts">
+            <option value="0">No</option>
+            <option value="1">Yes</option>
+        </select><br>
+
+        <label for="auto_download_livestream">Auto Download Livestream:</label>
+        <select id="auto_download_livestream">
+            <option value="0">No</option>
+            <option value="1">Yes</option>
+        </select><br>
+
+        <button type="submit">Add Channel</button>
+    </form>
+
+    <!-- Output area -->
+    <div class="output" id="output"></div>
+
     <script>
         // Function to fetch channel names from the backend and populate the dropdown
         async function fetchChannels() {
@@ -99,6 +143,53 @@
                 document.getElementById('output').innerHTML = `An error occurred: ${error.message}`;
             }
         }
+
+        // Function to handle form submission and send data to backend
+        document.getElementById('addChannelForm').addEventListener('submit', async function (event) {
+            event.preventDefault();
+
+            // Get values from the form
+            const channelName = document.getElementById('channel_name').value;
+            const channelUrl = document.getElementById('channel_url').value;
+            const useFilter = document.getElementById('use_filter').value;
+            const filterString = document.getElementById('filter_string').value;
+            const autoDownloadVideos = document.getElementById('auto_download_videos').value;
+            const autoDownloadShorts = document.getElementById('auto_download_shorts').value;
+            const autoDownloadLivestream = document.getElementById('auto_download_livestream').value;
+
+            // Prepare the data to send
+            const data = {
+                channel_name: channelName,
+                channel_url: channelUrl,
+                use_filter: parseInt(useFilter),
+                filter_string: filterString,
+                auto_download_videos: parseInt(autoDownloadVideos),
+                auto_download_shorts: parseInt(autoDownloadShorts),
+                auto_download_livestream: parseInt(autoDownloadLivestream)
+            };
+
+            try {
+                // Send a POST request to add the channel
+                const response = await fetch('http://192.168.0.71:5000/add-channel', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(data)
+                });
+
+                const result = await response.json();
+
+                // Show the result in the output area
+                if (response.ok) {
+                    document.getElementById('output').innerHTML = `Success: ${result.message}`;
+                } else {
+                    document.getElementById('output').innerHTML = `Error: ${result.message}`;
+                }
+            } catch (error) {
+                document.getElementById('output').innerHTML = `An error occurred: ${error.message}`;
+            }
+        });
 
         // Fetch channels when the page loads
         window.onload = fetchChannels;
