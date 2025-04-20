@@ -45,7 +45,7 @@
                 document.getElementById('output').innerHTML = 'Running script... Please wait.';
 
                 // Make the POST request to the backend API
-                const response = await fetch('http://services.dystrophy.homelab.local:5000/run-script', {
+                const response = await fetch('http://192.168.0.71:5000/run-script', {
                     method: 'POST',
                     headers: {import os
 import subprocess
