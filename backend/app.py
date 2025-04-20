@@ -12,6 +12,7 @@ DB_PASS = os.environ.get('DB_PASS')
 DB_NAME = os.environ.get('DB_NAME')
 DB_HOST = os.environ.get('DB_HOST', 'db')  # default to 'db' service if not set
 
+
 # Database connection function
 def get_db_connection():
     conn = psycopg2.connect(
@@ -28,6 +29,7 @@ SCRIPT_MAP = {
     'script2': '/scripts/script2.sh',
     'script3': '/scripts/script3.sh'
 }
+
 
 # Endpoint to fetch channel names
 @app.route('/get-channels', methods=['GET'])
@@ -47,6 +49,7 @@ def get_channels():
     
     except Exception as e:
         return jsonify({'status': 'error', 'message': str(e)}), 500
+
 
 @app.route('/run-script', methods=['POST'])
 def run_script():
@@ -101,6 +104,47 @@ def run_script():
             'status': 'error',
             'message': str(e)
         }), 500
+
+
+# Endpoint to add a new channel
+@app.route('/add-channel', methods=['POST'])
+def add_channel():
+    try:
+        # Get the form data from the request payload
+        data = request.get_json()
+        channel_name = data.get('channel_name')
+        use_filter = data.get('use_filter', 0)  # Default to 0 if not provided
+        filter_string = data.get('filter_string', '')
+        channel_url = data.get('channel_url')
+        auto_download_videos = data.get('auto_download_videos', 0)
+        auto_download_shorts = data.get('auto_download_shorts', 0)
+        auto_download_livestream = data.get('auto_download_livestream', 0)
+
+        # Validate required fields
+        if not channel_name or not channel_url:
+            return jsonify({'status': 'error', 'message': 'Channel name and URL are required.'}), 400
+
+        # Insert the new channel into the database
+        conn = get_db_connection()
+        cursor = conn.cursor()
+        cursor.execute(
+            """
+            INSERT INTO channels (added_timestamp, channel_name, use_filter, filter_string, 
+                                  channel_url, auto_download_videos, auto_download_shorts, auto_download_livestream)
+            VALUES (%s, %s, %s, %s, %s, %s, %s, %s)
+            """,
+            (datetime.now(), channel_name, use_filter, filter_string, channel_url, 
+             auto_download_videos, auto_download_shorts, auto_download_livestream)
+        )
+        conn.commit()
+        cursor.close()
+        conn.close()
+
+        return jsonify({'status': 'success', 'message': 'Channel added successfully.'})
+
+    except Exception as e:
+        return jsonify({'status': 'error', 'message': str(e)}), 500
+
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000)
