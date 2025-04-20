@@ -62,6 +62,7 @@ services:
       - /dev/dri:/dev/dri  # iGPU passthrough
     depends_on:
       - db
+    command: ["sh", "-c", "python jobs.py"]
 
 
   frontend:
