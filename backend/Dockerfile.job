@@ -1,0 +1,35 @@
+# Dockerfile.backend
+FROM python:3.9-slim
+
+# Install system dependencies needed for psycopg2 (and other packages)
+RUN apt-get update && apt-get install -y \
+    build-essential \
+    libpq-dev \
+    && rm -rf /var/lib/apt/lists/*
+
+# Set the working directory
+WORKDIR /app
+
+# Install Python dependencies
+COPY requirements.txt ./
+RUN pip3 install --no-cache-dir -r requirements.txt
+
+# Copy application files
+COPY . .
+
+# Copy the database initialization script into the container
+COPY init_db.sql /docker-entrypoint-initdb.d/
+COPY wait-for-it.sh /wait-for-it.sh
+
+# Set the execute permission for the wait-for-it.sh script
+RUN chmod +x /wait-for-it.sh
+
+# Set environment variables for the DB from Docker Compose
+ENV DB_HOST=db
+ENV DB_USER=$POSTGRES_USER
+ENV DB_PASS=$POSTGRES_PASSWORD
+ENV DB_NAME=mydb
+
+# Command to start the job
+RUN echo "Waiting for DB to be up"
+CMD /wait-for-it.sh $DB_HOST:5432 -- python jobs.py
