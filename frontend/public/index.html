@@ -97,32 +97,32 @@
             <label for="update_channel_name">Channel Name:</label>
             <input type="text" id="update_channel_name" disabled /><br>
 
-            <label for="use_filter">Use Filter:</label>
-            <select id="use_filter">
+            <label for="update_use_filter">Use Filter:</label>
+            <select id="update_use_filter">
                 <option value="0">No</option>
                 <option value="1">Yes</option>
             </select><br>
 
-            <label for="filter_string">Filter String:</label>
-            <input type="text" id="filter_string" /><br>
+            <label for="update_filter_string">Filter String:</label>
+            <input type="text" id="update_filter_string" /><br>
 
-            <label for="channel_url">Channel URL:</label>
-            <input type="text" id="channel_url" /><br>
+            <label for="update_channel_url">Channel URL:</label>
+            <input type="text" id="update_channel_url" /><br>
 
-            <label for="auto_download_videos">Auto Download Videos:</label>
-            <select id="auto_download_videos">
+            <label for="update_auto_download_videos">Auto Download Videos:</label>
+            <select id="update_auto_download_videos">
                 <option value="0">No</option>
                 <option value="1">Yes</option>
             </select><br>
 
-            <label for="auto_download_shorts">Auto Download Shorts:</label>
-            <select id="auto_download_shorts">
+            <label for="update_auto_download_shorts">Auto Download Shorts:</label>
+            <select id="update_auto_download_shorts">
                 <option value="0">No</option>
                 <option value="1">Yes</option>
             </select><br>
 
-            <label for="auto_download_livestream">Auto Download Livestream:</label>
-            <select id="auto_download_livestream">
+            <label for="update_auto_download_livestream">Auto Download Livestream:</label>
+            <select id="update_auto_download_livestream">
                 <option value="0">No</option>
                 <option value="1">Yes</option>
             </select><br>
@@ -257,12 +257,12 @@
                     document.getElementById('channelDetailsSection').style.display = 'block';
                     const channel = data.channel;
                     document.getElementById('update_channel_name').value = channel.channel_name;
-                    document.getElementById('use_filter').value = channel.use_filter;
-                    document.getElementById('filter_string').value = channel.filter_string;
-                    document.getElementById('channel_url').value = channel.channel_url;
-                    document.getElementById('auto_download_videos').value = channel.auto_download_videos;
-                    document.getElementById('auto_download_shorts').value = channel.auto_download_shorts;
-                    document.getElementById('auto_download_livestream').value = channel.auto_download_livestream;
+                    document.getElementById('update_use_filter').value = channel.use_filter;
+                    document.getElementById('update_filter_string').value = channel.filter_string;
+                    document.getElementById('update_channel_url').value = channel.channel_url;
+                    document.getElementById('update_auto_download_videos').value = channel.auto_download_videos;
+                    document.getElementById('update_auto_download_shorts').value = channel.auto_download_shorts;
+                    document.getElementById('update_auto_download_livestream').value = channel.auto_download_livestream;
                 } else {
                     alert(data.message);
                 }
@@ -276,12 +276,12 @@
             event.preventDefault();
 
             const channelName = document.getElementById('update_channel_name').value;
-            const useFilter = document.getElementById('use_filter').value;
-            const filterString = document.getElementById('filter_string').value;
-            const channelUrl = document.getElementById('channel_url').value;
-            const autoDownloadVideos = document.getElementById('auto_download_videos').value;
-            const autoDownloadShorts = document.getElementById('auto_download_shorts').value;
-            const autoDownloadLivestream = document.getElementById('auto_download_livestream').value;
+            const useFilter = document.getElementById('update_use_filter').value;
+            const filterString = document.getElementById('update_filter_string').value;
+            const channelUrl = document.getElementById('update_channel_url').value;
+            const autoDownloadVideos = document.getElementById('update_auto_download_videos').value;
+            const autoDownloadShorts = document.getElementById('update_auto_download_shorts').value;
+            const autoDownloadLivestream = document.getElementById('update_auto_download_livestream').value;
 
             const data = {
                 channel_name: channelName,
