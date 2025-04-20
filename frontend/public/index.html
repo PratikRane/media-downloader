@@ -53,14 +53,32 @@
             <option value="1">Yes</option>
         </select><br/>
 
+        <label for="monitor_videos">Monitor Videos:</label>
+        <select id="monitor_videos">
+            <option value="0">No</option>
+            <option value="1">Yes</option>
+        </select><br/>
+
         <label for="auto_download_shorts">Auto Download Shorts:</label>
         <select id="auto_download_shorts">
             <option value="0">No</option>
             <option value="1">Yes</option>
         </select><br/>
 
+        <label for="monitor_shorts">Monitor Shorts:</label>
+        <select id="monitor_shorts">
+            <option value="0">No</option>
+            <option value="1">Yes</option>
+        </select><br/>
+
         <label for="auto_download_livestream">Auto Download Livestream:</label>
         <select id="auto_download_livestream">
+            <option value="0">No</option>
+            <option value="1">Yes</option>
+        </select><br/>
+
+        <label for="monitor_livestream">Monitor Livestream:</label>
+        <select id="monitor_livestream">
             <option value="0">No</option>
             <option value="1">Yes</option>
         </select><br/>
@@ -115,14 +133,32 @@
                 <option value="1">Yes</option>
             </select><br>
 
+            <label for="update_monitor_videos">Monitor Videos:</label>
+            <select id="update_monitor_videos">
+                <option value="0">No</option>
+                <option value="1">Yes</option>
+            </select><br>
+
             <label for="update_auto_download_shorts">Auto Download Shorts:</label>
             <select id="update_auto_download_shorts">
                 <option value="0">No</option>
                 <option value="1">Yes</option>
             </select><br>
 
+            <label for="update_monitor_shorts">Monitor Shorts:</label>
+            <select id="update_monitor_shorts">
+                <option value="0">No</option>
+                <option value="1">Yes</option>
+            </select><br>
+
             <label for="update_auto_download_livestream">Auto Download Livestream:</label>
             <select id="update_auto_download_livestream">
+                <option value="0">No</option>
+                <option value="1">Yes</option>
+            </select><br>
+
+            <label for="update_monitor_livestream">Monitor Livestream:</label>
+            <select id="update_monitor_livestream">
                 <option value="0">No</option>
                 <option value="1">Yes</option>
             </select><br>
@@ -265,6 +301,9 @@
                     document.getElementById('update_auto_download_videos').value = channel.auto_download_videos;
                     document.getElementById('update_auto_download_shorts').value = channel.auto_download_shorts;
                     document.getElementById('update_auto_download_livestream').value = channel.auto_download_livestream;
+                    document.getElementById('update_monitor_videos').value = channel.monitor_videos;
+                    document.getElementById('update_monitor_shorts').value = channel.monitor_shorts;
+                    document.getElementById('update_monitor_livestream').value = channel.monitor_livestream;
                 } else {
                     alert(data.message);
                 }
@@ -284,6 +323,9 @@
             const autoDownloadVideos = document.getElementById('update_auto_download_videos').value;
             const autoDownloadShorts = document.getElementById('update_auto_download_shorts').value;
             const autoDownloadLivestream = document.getElementById('update_auto_download_livestream').value;
+            const monitorVideos = document.getElementById('update_monitor_videos').value;
+            const monitorShorts = document.getElementById('update_monitor_shorts').value;
+            const monitorLivestream = document.getElementById('update_monitor_livestream').value;
 
             const data = {
                 channel_name: channelName,
@@ -292,7 +334,11 @@
                 channel_url: channelUrl,
                 auto_download_videos: parseInt(autoDownloadVideos),
                 auto_download_shorts: parseInt(autoDownloadShorts),
-                auto_download_livestream: parseInt(autoDownloadLivestream)
+                auto_download_livestream: parseInt(autoDownloadLivestream),
+                monitor_videos: parseInt(monitorVideos),
+                monitor_shorts: parseInt(monitorShorts),
+                monitor_livestream: parseInt(monitorLivestream)
+
             };
 
             try {
