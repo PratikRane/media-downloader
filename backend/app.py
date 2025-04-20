@@ -68,8 +68,7 @@ def run_script():
             return jsonify({
                 'status': 'error',
                 'message': 'Invalid script name!',
-                'script_name': script_name
-                'message': 'Invalid script name!'
+                'script_name': script_name,
             }), 400
 
         # Get the script path based on the provided script name
