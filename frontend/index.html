@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Script Executor</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            margin: 10px;
+            cursor: pointer;
+        }
+        .output {
+            margin-top: 20px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            background-color: #f9f9f9;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Run Command Line Scripts</h1>
+
+    <!-- Buttons to trigger different scripts -->
+    <button onclick="runScript('script1')">Run Script 1</button>
+    <button onclick="runScript('script2')">Run Script 2</button>
+    <button onclick="runScript('script3')">Run Script 3</button>
+
+    <!-- Output area -->
+    <div class="output" id="output"></div>
+
+    <script>
+        // Function to run the script via the backend
+        async function runScript(scriptName) {
+            try {
+                // Show loading status
+                document.getElementById('output').innerHTML = 'Running script... Please wait.';
+
+                // Make the POST request to the backend API
+                const response = await fetch('http://localhost:5000/run-script', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ script_name: scriptName })
+                });
+
+                // Handle response
+                const result = await response.json();
+
+                // Display success or error
+                if (response.ok) {
+                    document.getElementById('output').innerHTML = 
+                        `Script executed successfully!\n\nOutput:\n${result.output}\n\nError:\n${result.error}`;
+                } else {
+                    document.getElementById('output').innerHTML = 
+                        `Error: ${result.message}`;
+                }
+            } catch (error) {
+                // Handle any network or other unexpected errors
+                document.getElementById('output').innerHTML = `An error occurred: ${error.message}`;
+            }
+        }
+    </script>
+
+</body>
+</html>
