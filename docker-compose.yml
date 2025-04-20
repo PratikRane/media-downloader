@@ -30,6 +30,8 @@ services:
       PUID: 1000
       PGID: 1000
       TZ: "America/America/Los_Angeles"
+    ports:
+      - "5000:5000"
     networks:
       - media-downloader
     depends_on:
