@@ -1,0 +1,61 @@
+version: "3.8"
+
+services:
+  db:
+    image: postgres:15
+    container_name: my_postgres_db
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: $POSTGRES_USER
+      POSTGRES_PASSWORD: $POSTGRES_PASSWORD
+      POSTGRES_DB: mydb
+      PUID: 1000
+      PGID: 1000
+      TZ: "America/America/Los_Angeles"
+    volumes:
+      - postgresql:/var/lib/postgresql/data
+    networks:
+      - media-downloader
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile.backend
+    container_name: my_backend
+    environment:
+      DB_HOST: db
+      DB_USER: $POSTGRES_USER
+      DB_PASS: $POSTGRES_PASSWORD
+      DB_NAME: mydb
+      PUID: 1000
+      PGID: 1000
+      TZ: "America/America/Los_Angeles"
+    networks:
+      - media-downloader
+    depends_on:
+      - db
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile.frontend
+    container_name: my_frontend
+    environment:
+      PUID: 1000
+      PGID: 1000
+      TZ: "America/America/Los_Angeles"
+    ports:
+      - "80:80"
+    networks:
+      - media-downloader
+    depends_on:
+      - backend
+
+
+volumes:
+  postgresql:
+    external: true
+
+networks:
+  media-downloader:
+    external: true
