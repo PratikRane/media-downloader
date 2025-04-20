@@ -182,12 +182,12 @@
 
                 // Show the result in the output area
                 if (response.ok) {
-                    document.getElementById('output').innerHTML = `Success: ${result.message}`;
+                    document.getElementById('add_channel_output').innerHTML = `Success: ${result.message}`;
                 } else {
-                    document.getElementById('output').innerHTML = `Error: ${result.message}`;
+                    document.getElementById('add_channel_output').innerHTML = `Error: ${result.message}`;
                 }
             } catch (error) {
-                document.getElementById('output').innerHTML = `An error occurred: ${error.message}`;
+                document.getElementById('add_channel_output').innerHTML = `An error occurred: ${error.message}`;
             }
         });
 
