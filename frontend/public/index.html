@@ -27,20 +27,6 @@
 </head>
 <body>
 
-    <h1>Run Command Line Scripts</h1>
-
-    <!-- Dropdown for channel selection -->
-    <label for="channelSelect">Select Channel: </label>
-    <select id="channelSelect"></select>
-
-    <!-- Buttons to trigger different scripts -->
-    <button onclick="runScript('script1')">Run Script 1</button>
-    <button onclick="runScript('script2')">Run Script 2</button>
-    <button onclick="runScript('script3')">Run Script 3</button>
-
-    <!-- Output area -->
-    <div class="output" id="output"></div>
-
     <h1>Channel Management</h1>
 
     <!-- Form to add a new channel -->
@@ -84,6 +70,20 @@
 
     <!-- Output area -->
     <div class="output" id="add_channel_output"></div>
+
+    <h1>Run Command Line Scripts</h1>
+
+    <!-- Dropdown for channel selection -->
+    <label for="channelSelect">Select Channel: </label>
+    <select id="channelSelect"></select>
+
+    <!-- Buttons to trigger different scripts -->
+    <button onclick="runScript('script1')">Run Script 1</button>
+    <button onclick="runScript('script2')">Run Script 2</button>
+    <button onclick="runScript('script3')">Run Script 3</button>
+
+    <!-- Output area -->
+    <div class="output" id="output"></div>
 
     <!-- Section to view and update a channel -->
     <h2>View and Update Channel</h2>
@@ -166,6 +166,7 @@
             try {
                 // Show loading status
                 document.getElementById('output').innerHTML = 'Running script... Please wait.';
+                document.getElementById('search_channel_name').value = selectedChannel;
 
                 // Make the POST request to the backend API
                 const response = await fetch('http://192.168.0.71:5000/run-script', {
