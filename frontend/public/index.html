@@ -71,7 +71,7 @@
     <!-- Output area -->
     <div class="output" id="add_channel_output"></div>
 
-    <h1>Run Command Line Scripts</h1>
+    <h1>Run Scripts</h1>
 
     <!-- Dropdown for channel selection -->
     <label for="channelSelect">Select Channel: </label>
@@ -184,6 +184,7 @@
                 if (response.ok) {
                     document.getElementById('output').innerHTML = 
                         `Script executed successfully!\n\nOutput:\n${result.output}\n\nError:\n${result.error}`;
+                    fetchChannels();
                 } else {
                     document.getElementById('output').innerHTML = 
                         `Error: ${result.message}`;
