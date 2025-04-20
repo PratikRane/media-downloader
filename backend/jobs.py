@@ -133,4 +133,5 @@ def initialize_scheduler():
         scheduler.shutdown()
 
 if __name__ == '__main__':
+    print('Initializing job to run on schedule ...')
     initialize_scheduler()
