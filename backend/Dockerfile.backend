@@ -36,3 +36,7 @@ ENV DB_NAME=mydb
 # Command to start the application
 RUN echo "Waiting for DB to be up"
 CMD /wait-for-it.sh $DB_HOST:5432 -- python app.py
+
+# Run the scheduler job
+#CMD ["sh", "-c", "python jobs.py"]
+
