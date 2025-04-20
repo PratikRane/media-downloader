@@ -41,6 +41,29 @@ services:
       - db
 
 
+  job:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile.job
+    container_name: my_job
+    environment:
+      DB_HOST: db
+      DB_USER: $POSTGRES_USER
+      DB_PASS: $POSTGRES_PASSWORD
+      DB_NAME: mydb
+      PUID: 1000
+      PGID: 1000
+      TZ: "America/Los_Angeles"
+    volumes:
+      - /root/.local/bin:/root/.local/bin
+      - /usr/bin/id3v2:/usr/bin/id3v2
+      - /mnt/w/YouTube:/YouTube
+    devices:
+      - /dev/dri:/dev/dri  # iGPU passthrough
+    depends_on:
+      - db
+
+
   frontend:
     build:
       context: ./frontend
