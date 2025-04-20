@@ -1,43 +1,75 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <link rel="icon" href="%PUBLIC_URL%/favicon.ico" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="theme-color" content="#000000" />
-    <meta
-      name="description"
-      content="Web site created using create-react-app"
-    />
-    <link rel="apple-touch-icon" href="%PUBLIC_URL%/logo192.png" />
-    <!--
-      manifest.json provides metadata used when your web app is installed on a
-      user's mobile device or desktop. See https://developers.google.com/web/fundamentals/web-app-manifest/
-    -->
-    <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
-    <!--
-      Notice the use of %PUBLIC_URL% in the tags above.
-      It will be replaced with the URL of the `public` folder during the build.
-      Only files inside the `public` folder can be referenced from the HTML.
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Script Executor</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            margin: 10px;
+            cursor: pointer;
+        }
+        .output {
+            margin-top: 20px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            background-color: #f9f9f9;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+    </style>
+</head>
+<body>
 
-      Unlike "/favicon.ico" or "favicon.ico", "%PUBLIC_URL%/favicon.ico" will
-      work correctly both with client-side routing and a non-root public URL.
-      Learn how to configure a non-root public URL by running `npm run build`.
-    -->
-    <title>React App</title>
-  </head>
-  <body>
-    <noscript>You need to enable JavaScript to run this app.</noscript>
-    <div id="root"></div>
-    <!--
-      This HTML file is a template.
-      If you open it directly in the browser, you will see an empty page.
+    <h1>Run Command Line Scripts</h1>
 
-      You can add webfonts, meta tags, or analytics to this file.
-      The build step will place the bundled scripts into the <body> tag.
+    <!-- Buttons to trigger different scripts -->
+    <button onclick="runScript('script1')">Run Script 1</button>
+    <button onclick="runScript('script2')">Run Script 2</button>
+    <button onclick="runScript('script3')">Run Script 3</button>
 
-      To begin the development, run `npm start` or `yarn start`.
-      To create a production bundle, use `npm run build` or `yarn build`.
-    -->
-  </body>
+    <!-- Output area -->
+    <div class="output" id="output"></div>
+
+    <script>
+        // Function to run the script via the backend
+        async function runScript(scriptName) {
+            try {
+                // Show loading status
+                document.getElementById('output').innerHTML = 'Running script... Please wait.';
+
+                // Make the POST request to the backend API
+                const response = await fetch('http://localhost:5000/run-script', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ script_name: scriptName })
+                });
+
+                // Handle response
+                const result = await response.json();
+
+                // Display success or error
+                if (response.ok) {
+                    document.getElementById('output').innerHTML = 
+                        `Script executed successfully!\n\nOutput:\n${result.output}\n\nError:\n${result.error}`;
+                } else {
+                    document.getElementById('output').innerHTML = 
+                        `Error: ${result.message}`;
+                }
+            } catch (error) {
+                // Handle any network or other unexpected errors
+                document.getElementById('output').innerHTML = `An error occurred: ${error.message}`;
+            }
+        }
+    </script>
+
+</body>
 </html>
