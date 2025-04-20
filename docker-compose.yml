@@ -45,7 +45,7 @@ services:
       PGID: 1000
       TZ: "America/America/Los_Angeles"
     ports:
-      - "85:3000"
+      - "3000:3000"
     networks:
       - media-downloader
     depends_on:
