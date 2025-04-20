@@ -38,6 +38,7 @@ def run_script():
 
         # Null check
         if script_name is None or not "":
+            print("Script name: " + script_name)
             return jsonify({
                 'status': 'error',
                 'message': 'No script name provided!'
