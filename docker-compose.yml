@@ -14,8 +14,6 @@ services:
       TZ: "America/America/Los_Angeles"
     volumes:
       - postgresql:/var/lib/postgresql/data
-    networks:
-      - media-downloader
 
   backend:
     build:
@@ -32,8 +30,6 @@ services:
       TZ: "America/America/Los_Angeles"
     ports:
       - "5000:5000"
-    networks:
-      - media-downloader
     depends_on:
       - db
 
@@ -48,16 +44,10 @@ services:
       TZ: "America/America/Los_Angeles"
     ports:
       - "3000:3000"
-    networks:
-      - media-downloader
     depends_on:
       - backend
 
 
 volumes:
   postgresql:
-    external: true
-
-networks:
-  media-downloader:
     external: true
