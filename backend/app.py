@@ -3,8 +3,10 @@ import subprocess
 from datetime import datetime
 import psycopg2
 from flask import Flask, jsonify, request
+from flask_cors import CORS
  
 app = Flask(__name__)
+CORS(app, origins=["http://localhost:3000"])
  
 # Get DB credentials from environment variables
 DB_USER = os.environ.get('DB_USER')
