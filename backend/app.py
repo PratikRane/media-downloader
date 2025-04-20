@@ -36,6 +36,13 @@ def run_script():
         payload = request.get_json()
         script_name = payload.get('script_name')
 
+        # Null check
+        if script_name is None or not "":
+            return jsonify({
+                'status': 'error',
+                'message': 'No script name provided!'
+            }), 400
+        
         # Validate script name
         if script_name not in SCRIPT_MAP:
             return jsonify({
