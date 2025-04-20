@@ -21,6 +21,9 @@ COPY . .
 COPY init_db.sql /docker-entrypoint-initdb.d/
 COPY wait-for-it.sh /wait-for-it.sh
 
+# Set the execute permission for the wait-for-it.sh script
+RUN chmod +x /wait-for-it.sh
+
 # Expose backend port
 EXPOSE 5000
 
