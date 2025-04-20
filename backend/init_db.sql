@@ -4,6 +4,7 @@
 CREATE TABLE IF NOT EXISTS script_logs (
     id SERIAL PRIMARY KEY,
     timestamp TIMESTAMP NOT NULL,
+    script_name TEXT,
     output TEXT,
     error TEXT
 );
