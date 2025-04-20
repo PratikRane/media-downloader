@@ -156,5 +156,77 @@ def add_channel():
         return jsonify({'status': 'error', 'message': str(e)}), 500
 
 
+# Endpoint to get a specific channel by channel_name
+@app.route('/get-channel', methods=['GET'])
+def get_channel():
+    try:
+        channel_name = request.args.get('channel_name')
+
+        if not channel_name:
+            return jsonify({'status': 'error', 'message': 'Channel name is required.'}), 400
+
+        conn = get_db_connection()
+        cursor = conn.cursor()
+        cursor.execute("SELECT * FROM channels WHERE channel_name = %s", (channel_name,))
+        channel = cursor.fetchone()
+        cursor.close()
+        conn.close()
+
+        if not channel:
+            return jsonify({'status': 'error', 'message': 'Channel not found.'}), 404
+
+        channel_data = {
+            'id': channel[0],
+            'added_timestamp': channel[1],
+            'channel_name': channel[2],
+            'use_filter': channel[3],
+            'filter_string': channel[4],
+            'channel_url': channel[5],
+            'auto_download_videos': channel[6],
+            'auto_download_shorts': channel[7],
+            'auto_download_livestream': channel[8]
+        }
+
+        return jsonify({'status': 'success', 'channel': channel_data})
+
+    except Exception as e:
+        return jsonify({'status': 'error', 'message': str(e)}), 500
+
+# Endpoint to update a specific channel
+@app.route('/update-channel', methods=['POST'])
+def update_channel():
+    try:
+        data = request.get_json()
+        channel_name = data.get('channel_name')
+        use_filter = data.get('use_filter')
+        filter_string = data.get('filter_string')
+        channel_url = data.get('channel_url')
+        auto_download_videos = data.get('auto_download_videos')
+        auto_download_shorts = data.get('auto_download_shorts')
+        auto_download_livestream = data.get('auto_download_livestream')
+
+        if not channel_name:
+            return jsonify({'status': 'error', 'message': 'Channel name is required.'}), 400
+
+        conn = get_db_connection()
+        cursor = conn.cursor()
+
+        cursor.execute("""
+            UPDATE channels 
+            SET use_filter = %s, filter_string = %s, channel_url = %s, 
+                auto_download_videos = %s, auto_download_shorts = %s, auto_download_livestream = %s 
+            WHERE channel_name = %s
+        """, (use_filter, filter_string, channel_url, auto_download_videos, auto_download_shorts, auto_download_livestream, channel_name))
+
+        conn.commit()
+        cursor.close()
+        conn.close()
+
+        return jsonify({'status': 'success', 'message': 'Channel updated successfully.'})
+
+    except Exception as e:
+        return jsonify({'status': 'error', 'message': str(e)}), 500
+
+
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000)
