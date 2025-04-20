@@ -6,7 +6,7 @@ from flask import Flask, jsonify, request
 from flask_cors import CORS
  
 app = Flask(__name__)
-CORS(app, origins=["http://localhost:3000"])
+CORS(app, origins=["http://192.168.0.71:3000", "http://192.168.0.71:5000"])
  
 # Get DB credentials from environment variables
 DB_USER = os.environ.get('DB_USER')
