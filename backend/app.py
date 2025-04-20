@@ -129,6 +129,10 @@ def add_channel():
         auto_download_videos = data.get('auto_download_videos', 0)
         auto_download_shorts = data.get('auto_download_shorts', 0)
         auto_download_livestream = data.get('auto_download_livestream', 0)
+        monitor_videos = data.get('monitor_videos', 0)
+        monitor_shorts = data.get('monitor_shorts', 0)
+        monitor_livestream = data.get('monitor_livestream', 0)
+
 
         # Validate required fields
         if not channel_name or not channel_url:
@@ -140,11 +144,11 @@ def add_channel():
         cursor.execute(
             """
             INSERT INTO channels (added_timestamp, channel_name, use_filter, filter_string, 
-                                  channel_url, auto_download_videos, auto_download_shorts, auto_download_livestream)
-            VALUES (%s, %s, %s, %s, %s, %s, %s, %s)
+                                  channel_url, auto_download_videos, auto_download_shorts, auto_download_livestream, monitor_videos, monitor_shorts, monitor_livestream)
+            VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
             """,
             (datetime.now(), channel_name, use_filter, filter_string, channel_url, 
-             auto_download_videos, auto_download_shorts, auto_download_livestream)
+             auto_download_videos, auto_download_shorts, auto_download_livestream, monitor_videos, monitor_shorts, monitor_livestream)
         )
         conn.commit()
         cursor.close()
@@ -184,7 +188,10 @@ def get_channel():
             'channel_url': channel[5],
             'auto_download_videos': channel[6],
             'auto_download_shorts': channel[7],
-            'auto_download_livestream': channel[8]
+            'auto_download_livestream': channel[8],
+            'monitor_videos': channel[9],
+            'monitor_shorts': channel[10],
+            'monitor_livestream': channel[11]
         }
 
         return jsonify({'status': 'success', 'channel': channel_data})
@@ -204,6 +211,9 @@ def update_channel():
         auto_download_videos = data.get('auto_download_videos')
         auto_download_shorts = data.get('auto_download_shorts')
         auto_download_livestream = data.get('auto_download_livestream')
+        monitor_videos = data.get('monitor_videos')
+        monitor_shorts = data.get('monitor_shorts')
+        monitor_livestream = data.get('monitor_livestream')
 
         if not channel_name:
             return jsonify({'status': 'error', 'message': 'Channel name is required.'}), 400
@@ -214,9 +224,10 @@ def update_channel():
         cursor.execute("""
             UPDATE channels 
             SET use_filter = %s, filter_string = %s, channel_url = %s, 
-                auto_download_videos = %s, auto_download_shorts = %s, auto_download_livestream = %s 
+                auto_download_videos = %s, auto_download_shorts = %s, auto_download_livestream = %s,
+                monitor_videos = %s, monitor_shorts = %s, monitor_livestream = %s
             WHERE channel_name = %s
-        """, (use_filter, filter_string, channel_url, auto_download_videos, auto_download_shorts, auto_download_livestream, channel_name))
+        """, (use_filter, filter_string, channel_url, auto_download_videos, auto_download_shorts, auto_download_livestream, monitor_videos, monitor_shorts, monitor_livestream, channel_name))
 
         conn.commit()
         cursor.close()
