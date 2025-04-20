@@ -315,6 +315,12 @@
             }
         });
 
+        const dropdown = document.getElementById('channelSelect');
+        dropdown.addEventListener('change', function() {
+          const selectedValue = dropdown.value;
+          document.getElementById('search_channel_name').value = selectedValue;
+        });
+
         // Fetch channels when the page loads
         window.onload = fetchChannels;
     </script>
