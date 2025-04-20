@@ -15,6 +15,7 @@ services:
     volumes:
       - postgresql:/var/lib/postgresql/data
 
+
   backend:
     build:
       context: ./backend
@@ -28,10 +29,17 @@ services:
       PUID: 1000
       PGID: 1000
       TZ: "America/America/Los_Angeles"
+    volumes:
+      - /root/.local/bin:/root/.local/bin
+      - /usr/bin/id3v2:/usr/bin/id3v2
+      - /mnt/w/YouTube:/YouTube
+    devices:
+      - /dev/dri:/dev/dri  # iGPU passthrough
     ports:
       - "5000:5000"
     depends_on:
       - db
+
 
   frontend:
     build:
