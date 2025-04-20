@@ -26,6 +26,9 @@ EXPOSE 5000
 
 # Set environment variables for the DB from Docker Compose
 ENV DB_HOST=db
+ENV DB_USER=$POSTGRES_USER
+ENV DB_PASS=$POSTGRES_PASSWORD
+ENV DB_NAME=mydb
 
 # Command to start the application
 CMD /wait-for-it.sh $DB_HOST:5432 -- python app.py
