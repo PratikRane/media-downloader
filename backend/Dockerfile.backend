@@ -10,7 +10,6 @@ RUN pip install --no-cache-dir -r requirements.txt
 
 # Copy application files
 COPY . .
-COPY ../.env .
 
 # Copy the database initialization script into the container
 COPY init_db.sql /docker-entrypoint-initdb.d/
