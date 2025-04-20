@@ -45,7 +45,7 @@
         // Function to fetch channel names from the backend and populate the dropdown
         async function fetchChannels() {
             try {
-                const response = await fetch('http://localhost:5000/get-channels');
+                const response = await fetch('http://192.168.0.71:5000/get-channels');
                 const data = await response.json();
                 const channels = data.channels;
 
@@ -75,7 +75,7 @@
                 document.getElementById('output').innerHTML = 'Running script... Please wait.';
 
                 // Make the POST request to the backend API
-                const response = await fetch('http://localhost:5000/run-script', {
+                const response = await fetch('http://192.168.0.71:5000/run-script', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
