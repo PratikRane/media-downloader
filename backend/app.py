@@ -39,7 +39,7 @@ def get_channels():
     try:
         conn = get_db_connection()
         cursor = conn.cursor()
-        cursor.execute("SELECT channel_name FROM channels")
+        cursor.execute("SELECT channel_name FROM channels order by channel_name")
         channels = cursor.fetchall()
         cursor.close()
         conn.close()
