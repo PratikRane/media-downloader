@@ -13,6 +13,7 @@ WORKDIR /app
 # Install Python dependencies
 COPY requirements.txt ./
 RUN pip3 install --no-cache-dir -r requirements.txt
+RUN CHMOD +x /wait-for-it.sh
 
 # Copy application files
 COPY . .
