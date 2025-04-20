@@ -50,6 +50,7 @@ def get_channels():
         return jsonify({'channels': channel_names})
     
     except Exception as e:
+        print(str(e))
         return jsonify({'status': 'error', 'message': str(e)}), 500
 
 
@@ -110,6 +111,7 @@ def run_script():
              'error': error
          })
     except Exception as e:
+        print(str(e))
         return jsonify({
             'status': 'error',
             'message': str(e)
@@ -157,6 +159,7 @@ def add_channel():
         return jsonify({'status': 'success', 'message': 'Channel added successfully.'})
 
     except Exception as e:
+        print(str(e))
         return jsonify({'status': 'error', 'message': str(e)}), 500
 
 
@@ -197,6 +200,7 @@ def get_channel():
         return jsonify({'status': 'success', 'channel': channel_data})
 
     except Exception as e:
+        print(str(e))
         return jsonify({'status': 'error', 'message': str(e)}), 500
 
 # Endpoint to update a specific channel
@@ -236,6 +240,7 @@ def update_channel():
         return jsonify({'status': 'success', 'message': 'Channel updated successfully.'})
 
     except Exception as e:
+        print(str(e))
         return jsonify({'status': 'error', 'message': str(e)}), 500
 
 
