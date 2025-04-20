@@ -31,5 +31,4 @@ ENV DB_PASS=$POSTGRES_PASSWORD
 ENV DB_NAME=mydb
 
 # Command to start the job
-RUN echo "Waiting for DB to be up"
-CMD /wait-for-it.sh $DB_HOST:5432 -- python jobs.py
+CMD ["sh", "-c", "python jobs.py"]
