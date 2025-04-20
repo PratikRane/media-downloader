@@ -38,7 +38,6 @@ def run_script():
 
         # Null check
         if script_name is None or "":
-            print("Script name: " + script_name)
             return jsonify({
                 'status': 'error',
                 'message': 'No script name provided!'
@@ -48,7 +47,8 @@ def run_script():
         if script_name not in SCRIPT_MAP:
             return jsonify({
                 'status': 'error',
-                'message': 'Invalid script name!'
+                'message': 'Invalid script name!',
+                'script_name': script_name
             }), 400
 
         # Get the script path based on the provided script name
