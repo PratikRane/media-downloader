@@ -47,37 +47,37 @@
     <h2>Add New Channel</h2>
     <form id="addChannelForm">
         <label for="channel_name">Channel Name:</label>
-        <input type="text" id="channel_name" required /><br>
+        <input type="text" id="channel_name" required /><br/>
 
         <label for="channel_url">Channel URL:</label>
-        <input type="text" id="channel_url" required /><br>
+        <input type="text" id="channel_url" required /><br/>
 
         <label for="use_filter">Use Filter:</label>
         <select id="use_filter">
             <option value="0">No</option>
             <option value="1">Yes</option>
-        </select><br>
+        </select><br/>
 
         <label for="filter_string">Filter String:</label>
-        <input type="text" id="filter_string" /><br>
+        <input type="text" id="filter_string" /><br/>
 
         <label for="auto_download_videos">Auto Download Videos:</label>
         <select id="auto_download_videos">
             <option value="0">No</option>
             <option value="1">Yes</option>
-        </select><br>
+        </select><br/>
 
         <label for="auto_download_shorts">Auto Download Shorts:</label>
         <select id="auto_download_shorts">
             <option value="0">No</option>
             <option value="1">Yes</option>
-        </select><br>
+        </select><br/>
 
         <label for="auto_download_livestream">Auto Download Livestream:</label>
         <select id="auto_download_livestream">
             <option value="0">No</option>
             <option value="1">Yes</option>
-        </select><br>
+        </select><br/>
 
         <button type="submit">Add Channel</button>
     </form>
@@ -182,12 +182,12 @@
 
                 // Show the result in the output area
                 if (response.ok) {
-                    document.getElementById('output').innerHTML = `Success: ${result.message}`;
+                    document.getElementById('add_channel_output').innerHTML = `Success: ${result.message}`;
                 } else {
-                    document.getElementById('output').innerHTML = `Error: ${result.message}`;
+                    document.getElementById('add_channel_output').innerHTML = `Error: ${result.message}`;
                 }
             } catch (error) {
-                document.getElementById('output').innerHTML = `An error occurred: ${error.message}`;
+                document.getElementById('add_channel_output').innerHTML = `An error occurred: ${error.message}`;
             }
         });
 
