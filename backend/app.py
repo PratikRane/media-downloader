@@ -22,12 +22,24 @@ def get_db_connection():
     )
     return conn
 
-# Dictionary to map script names to their corresponding file paths
-SCRIPT_MAP = {
-    'script1': '/scripts/script1.sh',
-    'script2': '/scripts/script2.sh',
-    'script3': '/scripts/script3.sh'
-}
+# Endpoint to fetch channel names
+@app.route('/get-channels', methods=['GET'])
+def get_channels():
+    try:
+        conn = get_db_connection()
+        cursor = conn.cursor()
+        cursor.execute("SELECT channel_name FROM channels")
+        channels = cursor.fetchall()
+        cursor.close()
+        conn.close()
+
+        # Extract channel names from result
+        channel_names = [channel[0] for channel in channels]
+
+        return jsonify({'channels': channel_names})
+    
+    except Exception as e:
+        return jsonify({'status': 'error', 'message': str(e)}), 500
 
 @app.route('/run-script', methods=['POST'])
 def run_script():
@@ -35,20 +47,13 @@ def run_script():
         # Get the payload from the request
         payload = request.get_json()
         script_name = payload.get('script_name')
+        channel_name = payload.get('channel_name')
 
-        # Null check
-        if script_name is None or "":
-            return jsonify({
-                'status': 'error',
-                'message': 'No script name provided!'
-            }), 400
-        
         # Validate script name
         if script_name not in SCRIPT_MAP:
             return jsonify({
                 'status': 'error',
-                'message': 'Invalid script name!',
-                'script_name': script_name
+                'message': 'Invalid script name!'
             }), 400
 
         # Get the script path based on the provided script name
@@ -63,8 +68,8 @@ def run_script():
         conn = get_db_connection()
         cursor = conn.cursor()
         cursor.execute(
-            "INSERT INTO script_logs (timestamp, script_name, output, error) VALUES (%s, %s, %s, %s)",
-            (datetime.now(), script_name, output, error)
+            "INSERT INTO script_logs (timestamp, script_name, output, error, channel_name) VALUES (%s, %s, %s, %s, %s)",
+            (datetime.now(), script_name, output, error, channel_name)
         )
         conn.commit()
         cursor.close()
