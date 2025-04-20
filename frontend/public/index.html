@@ -85,6 +85,55 @@
     <!-- Output area -->
     <div class="output" id="add_channel_output"></div>
 
+    <!-- Section to view and update a channel -->
+    <h2>View and Update Channel</h2>
+    <label for="search_channel_name">Channel Name:</label>
+    <input type="text" id="search_channel_name" />
+    <button onclick="fetchChannelDetails()">Search</button>
+
+    <div id="channelDetailsSection" style="display:none;">
+        <h3>Channel Details</h3>
+        <form id="updateChannelForm" class="channel-details">
+            <label for="update_channel_name">Channel Name:</label>
+            <input type="text" id="update_channel_name" disabled /><br>
+
+            <label for="use_filter">Use Filter:</label>
+            <select id="use_filter">
+                <option value="0">No</option>
+                <option value="1">Yes</option>
+            </select><br>
+
+            <label for="filter_string">Filter String:</label>
+            <input type="text" id="filter_string" /><br>
+
+            <label for="channel_url">Channel URL:</label>
+            <input type="text" id="channel_url" /><br>
+
+            <label for="auto_download_videos">Auto Download Videos:</label>
+            <select id="auto_download_videos">
+                <option value="0">No</option>
+                <option value="1">Yes</option>
+            </select><br>
+
+            <label for="auto_download_shorts">Auto Download Shorts:</label>
+            <select id="auto_download_shorts">
+                <option value="0">No</option>
+                <option value="1">Yes</option>
+            </select><br>
+
+            <label for="auto_download_livestream">Auto Download Livestream:</label>
+            <select id="auto_download_livestream">
+                <option value="0">No</option>
+                <option value="1">Yes</option>
+            </select><br>
+
+            <button type="submit">Update Channel</button>
+        </form>
+    </div>
+
+    <!-- Output area -->
+    <div class="output" id="update_output"></div>
+    
     <script>
         // Function to fetch channel names from the backend and populate the dropdown
         async function fetchChannels() {
@@ -188,6 +237,80 @@
                 }
             } catch (error) {
                 document.getElementById('add_channel_output').innerHTML = `An error occurred: ${error.message}`;
+            }
+        });
+
+        // Function to fetch the channel details based on channel name
+        async function fetchChannelDetails() {
+            const channelName = document.getElementById('search_channel_name').value;
+
+            if (!channelName) {
+                alert("Please enter a channel name.");
+                return;
+            }
+
+            try {
+                const response = await fetch(`http://192.168.0.71:5000/get-channel?channel_name=${channelName}`);
+                const data = await response.json();
+
+                if (response.ok) {
+                    document.getElementById('channelDetailsSection').style.display = 'block';
+                    const channel = data.channel;
+                    document.getElementById('update_channel_name').value = channel.channel_name;
+                    document.getElementById('use_filter').value = channel.use_filter;
+                    document.getElementById('filter_string').value = channel.filter_string;
+                    document.getElementById('channel_url').value = channel.channel_url;
+                    document.getElementById('auto_download_videos').value = channel.auto_download_videos;
+                    document.getElementById('auto_download_shorts').value = channel.auto_download_shorts;
+                    document.getElementById('auto_download_livestream').value = channel.auto_download_livestream;
+                } else {
+                    alert(data.message);
+                }
+            } catch (error) {
+                alert('Error fetching channel details: ' + error);
+            }
+        }
+
+        // Function to handle the form submission and update the channel details
+        document.getElementById('updateChannelForm').addEventListener('submit', async function (event) {
+            event.preventDefault();
+
+            const channelName = document.getElementById('update_channel_name').value;
+            const useFilter = document.getElementById('use_filter').value;
+            const filterString = document.getElementById('filter_string').value;
+            const channelUrl = document.getElementById('channel_url').value;
+            const autoDownloadVideos = document.getElementById('auto_download_videos').value;
+            const autoDownloadShorts = document.getElementById('auto_download_shorts').value;
+            const autoDownloadLivestream = document.getElementById('auto_download_livestream').value;
+
+            const data = {
+                channel_name: channelName,
+                use_filter: parseInt(useFilter),
+                filter_string: filterString,
+                channel_url: channelUrl,
+                auto_download_videos: parseInt(autoDownloadVideos),
+                auto_download_shorts: parseInt(autoDownloadShorts),
+                auto_download_livestream: parseInt(autoDownloadLivestream)
+            };
+
+            try {
+                const response = await fetch('http://192.168.0.71:5000/update-channel', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(data)
+                });
+
+                const result = await response.json();
+
+                if (response.ok) {
+                    alert('Channel updated successfully');
+                } else {
+                    alert('Error: ' + result.message);
+                }
+            } catch (error) {
+                alert('Error updating channel: ' + error);
             }
         });
 
