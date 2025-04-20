@@ -29,6 +29,10 @@
 
     <h1>Run Command Line Scripts</h1>
 
+    <!-- Dropdown for channel selection -->
+    <label for="channelSelect">Select Channel: </label>
+    <select id="channelSelect"></select>
+
     <!-- Buttons to trigger different scripts -->
     <button onclick="runScript('script1')">Run Script 1</button>
     <button onclick="runScript('script2')">Run Script 2</button>
@@ -38,19 +42,45 @@
     <div class="output" id="output"></div>
 
     <script>
-        // Function to run the script via the backend
+        // Function to fetch channel names from the backend and populate the dropdown
+        async function fetchChannels() {
+            try {
+                const response = await fetch('http://localhost:5000/get-channels');
+                const data = await response.json();
+                const channels = data.channels;
+
+                const channelSelect = document.getElementById('channelSelect');
+                channels.forEach(channel => {
+                    const option = document.createElement('option');
+                    option.value = channel;
+                    option.textContent = channel;
+                    channelSelect.appendChild(option);
+                });
+            } catch (error) {
+                console.error("Error fetching channels:", error);
+            }
+        }
+
+        // Function to run the script via the backend with the selected channel
         async function runScript(scriptName) {
+            const selectedChannel = document.getElementById('channelSelect').value;
+
+            if (!selectedChannel) {
+                alert("Please select a channel.");
+                return;
+            }
+
             try {
                 // Show loading status
                 document.getElementById('output').innerHTML = 'Running script... Please wait.';
 
                 // Make the POST request to the backend API
-                const response = await fetch('http://192.168.0.71:5000/run-script', {
+                const response = await fetch('http://localhost:5000/run-script', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
                     },
-                    body: JSON.stringify({ script_name: scriptName })
+                    body: JSON.stringify({ script_name: scriptName, channel_name: selectedChannel })
                 });
 
                 // Handle response
@@ -69,6 +99,9 @@
                 document.getElementById('output').innerHTML = `An error occurred: ${error.message}`;
             }
         }
+
+        // Fetch channels when the page loads
+        window.onload = fetchChannels;
     </script>
 
 </body>
