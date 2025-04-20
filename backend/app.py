@@ -37,7 +37,7 @@ def run_script():
         script_name = payload.get('script_name')
 
         # Null check
-        if script_name is None or not "":
+        if script_name is None or "":
             print("Script name: " + script_name)
             return jsonify({
                 'status': 'error',
