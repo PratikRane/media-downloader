@@ -95,12 +95,20 @@ def run_script():
         cursor.close()
         conn.close()
 
-        return jsonify({
-            'status': 'success',
-            'message': f'Script {script_name} executed successfully!',
-            'output': output,
-            'error': error
-        })
+        if error is None or "":
+         return jsonify({
+             'status': 'success',
+             'message': f'Script {script_name} executed successfully!',
+             'output': output,
+             'error': error
+         })
+        else:
+         return jsonify({
+             'status': 'Fail',
+             'message': f'Script {script_name} failed!',
+             'output': output,
+             'error': error
+         })
     except Exception as e:
         return jsonify({
             'status': 'error',
